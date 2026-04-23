@@ -3,23 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard,
-  Upload,
-  ShieldAlert,
-  Database,
-  BarChart3,
-  FileText,
-  Clock,
-  Settings,
-  MessageSquare,
-  Shield,
-  Plus,
-  Sparkles,
-  PanelLeftClose,
-  PanelLeft,
+  LayoutDashboard, Upload, ShieldAlert, Database, BarChart3,
+  FileText, Clock, Settings, Shield, Plus,
+  Sparkles, LogOut
 } from "lucide-react";
-import { useState } from "react";
+import { useCallback } from "react";
 import { cn } from "@/lib/utils";
+import { useSidebar } from "./sidebar-context";
+import { useAuth } from "@/components/auth-context";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -32,118 +23,144 @@ const navItems = [
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
+export const COLLAPSED_WIDTH = 68;
+export const EXPANDED_WIDTH = 240;
+
 export function Sidebar() {
   const pathname = usePathname();
-  const [collapsed, setCollapsed] = useState(false);
+  const { expanded, setExpanded } = useSidebar();
+  const { user, signOut } = useAuth();
+
+  const handleMouseEnter = useCallback(() => {
+    setExpanded(true);
+  }, [setExpanded]);
+
+  const handleMouseLeave = useCallback(() => {
+    setExpanded(false);
+  }, [setExpanded]);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   return (
     <aside
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className={cn(
-        "fixed left-0 top-0 z-40 h-screen flex flex-col border-r border-white/[0.06] bg-[#060609] transition-all duration-300",
-        collapsed ? "w-[68px]" : "w-[240px]"
+        "fixed left-0 top-0 z-40 h-screen flex flex-col border-r border-content/[0.06] bg-sidebar transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
+        expanded ? "w-[240px]" : "w-[68px]"
       )}
     >
-      {/* Brand */}
-      <div className="flex items-center justify-between px-4 h-16 border-b border-white/[0.06] shrink-0">
+      {/* Logo / Brand */}
+      <div className="flex items-center px-4 h-16 border-b border-content/[0.06] shrink-0">
         <Link href="/" className="flex items-center gap-2.5 overflow-hidden">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/20">
-            <Shield className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 rounded-lg bg-cta flex items-center justify-center shrink-0">
+            <Shield className="w-4 h-4 text-cta-foreground" />
           </div>
-          {!collapsed && (
-            <span className="text-sm font-semibold tracking-tight text-white whitespace-nowrap">
-              EquiGuard AI
-            </span>
-          )}
+          <span
+            className={cn(
+              "text-sm font-semibold tracking-tight text-content whitespace-nowrap transition-all duration-300",
+              expanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 pointer-events-none w-0"
+            )}
+          >
+            EquiGuard AI
+          </span>
         </Link>
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="text-white/40 hover:text-white/70 transition-colors"
-        >
-          {collapsed ? (
-            <PanelLeft className="w-4 h-4" />
-          ) : (
-            <PanelLeftClose className="w-4 h-4" />
-          )}
-        </button>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
         {navItems.map((item) => {
-          const isActive =
-            pathname === item.href || pathname.startsWith(item.href + "/");
+          const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
           return (
-            <Link
-              key={item.href}
-              href={item.href}
+            <Link key={item.href} href={item.href}
+              title={!expanded ? item.label : undefined}
               className={cn(
                 "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-indigo-500/10 text-indigo-300 border border-indigo-500/20"
-                  : "text-white/50 hover:text-white/80 hover:bg-white/[0.04] border border-transparent"
+                  ? "bg-content/[0.08] text-content border border-content/[0.12]"
+                  : "text-content/50 hover:text-content/80 hover:bg-content/[0.04] border border-transparent"
               )}
             >
-              <item.icon
+              <item.icon className={cn("w-[18px] h-[18px] shrink-0 transition-colors", isActive ? "text-content" : "text-content/40 group-hover:text-content/60")} />
+              <span
                 className={cn(
-                  "w-[18px] h-[18px] shrink-0 transition-colors",
-                  isActive ? "text-indigo-400" : "text-white/40 group-hover:text-white/60"
+                  "truncate transition-all duration-300",
+                  expanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 pointer-events-none w-0 overflow-hidden"
                 )}
-              />
-              {!collapsed && <span className="truncate">{item.label}</span>}
+              >
+                {item.label}
+              </span>
             </Link>
           );
         })}
       </nav>
 
-      {/* AI Assistant section */}
-      <div className="border-t border-white/[0.06] p-3 shrink-0">
-        <Link
-          href="/ai-assistant"
+      {/* AI Assistant */}
+      <div className="border-t border-content/[0.06] p-3 shrink-0">
+        <Link href="/ai-assistant"
+          title={!expanded ? "AI Assistant" : undefined}
           className={cn(
             "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 mb-2",
             pathname === "/ai-assistant"
-              ? "bg-indigo-500/10 text-indigo-300 border border-indigo-500/20"
-              : "text-white/50 hover:text-white/80 hover:bg-white/[0.04] border border-transparent"
+              ? "bg-content/[0.08] text-content border border-content/[0.12]"
+              : "text-content/50 hover:text-content/80 hover:bg-content/[0.04] border border-transparent"
           )}
         >
-          <Sparkles
+          <Sparkles className={cn("w-[18px] h-[18px] shrink-0", pathname === "/ai-assistant" ? "text-content" : "text-content/40 group-hover:text-content/60")} />
+          <span
             className={cn(
-              "w-[18px] h-[18px] shrink-0",
-              pathname === "/ai-assistant"
-                ? "text-indigo-400"
-                : "text-white/40 group-hover:text-white/60"
+              "truncate transition-all duration-300",
+              expanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 pointer-events-none w-0 overflow-hidden"
             )}
-          />
-          {!collapsed && <span>AI Assistant</span>}
+          >
+            AI Assistant
+          </span>
         </Link>
-        {!collapsed && (
-          <>
-            <p className="text-[11px] text-white/30 px-3 mb-2">
-              Ask me anything about bias, fairness, or your dataset...
-            </p>
-            <button className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs font-medium text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/15 border border-indigo-500/20 transition-all">
-              <Plus className="w-3.5 h-3.5" />
-              New Chat
-            </button>
-          </>
-        )}
+        <div
+          className={cn(
+            "transition-all duration-300 overflow-hidden",
+            expanded ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+          )}
+        >
+          <p className="text-[11px] text-content/30 px-3 mb-2">Ask me anything about bias, fairness, or your dataset...</p>
+          <button className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs font-medium text-content/70 bg-content/[0.06] hover:bg-content/[0.1] border border-content/[0.1] transition-all">
+            <Plus className="w-3.5 h-3.5" />
+            New Chat
+          </button>
+        </div>
       </div>
 
-      {/* User */}
-      <div className="border-t border-white/[0.06] p-3 shrink-0">
-        <div className="flex items-center gap-3 px-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
-            A
-          </div>
-          {!collapsed && (
-            <div className="overflow-hidden">
-              <p className="text-sm font-medium text-white/80 truncate">
-                Admin
-              </p>
-              <p className="text-[11px] text-white/30 truncate">
-                admin@equiguard.ai
-              </p>
+      {/* User profile */}
+      <div className="border-t border-content/[0.06] p-3 shrink-0">
+        <div className="flex items-center justify-between gap-3 px-2">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-8 h-8 rounded-full bg-cta flex items-center justify-center text-cta-foreground text-xs font-bold shrink-0">
+              {user?.displayName?.[0] || user?.email?.[0] || "U"}
             </div>
+            <div
+              className={cn(
+                "overflow-hidden transition-all duration-300",
+                expanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 pointer-events-none w-0"
+              )}
+            >
+              <p className="text-sm font-medium text-content/80 truncate">{user?.displayName || "User"}</p>
+              <p className="text-[11px] text-content/30 truncate">{user?.email}</p>
+            </div>
+          </div>
+          {expanded && (
+            <button
+              onClick={handleSignOut}
+              className="p-2 rounded-lg text-content/40 hover:text-content/80 hover:bg-content/[0.06] transition-all"
+              title="Sign Out"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
           )}
         </div>
       </div>
