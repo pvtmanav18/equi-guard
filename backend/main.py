@@ -27,7 +27,7 @@ app = FastAPI(title="EquiGuard API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://equiguard-cd5ed.web.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

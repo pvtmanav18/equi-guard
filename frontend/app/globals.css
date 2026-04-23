@@ -37,7 +37,7 @@
 }
 
 :root {
-  --background: #0d0d0e;
+  --background: #000000;
   --foreground: #f8fafc;
   --card: rgba(255, 255, 255, 0.02);
   --card-foreground: #f8fafc;
@@ -261,7 +261,7 @@
 
 /* Glass card styling — theme-aware */
 .glass-card {
-  background: rgba(var(--content-rgb), 0.03);
+  background: rgba(var(--content-rgb), 0.05);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(var(--content-rgb), 0.06);
@@ -272,7 +272,7 @@
 }
 
 .glass-card-hover:hover {
-  background: rgba(var(--content-rgb), 0.05);
+  background: rgba(var(--content-rgb), 0.08);
   border-color: rgba(var(--content-rgb), 0.1);
   transform: translateY(-2px);
   box-shadow: 0 8px 32px rgba(var(--content-rgb), 0.08);
