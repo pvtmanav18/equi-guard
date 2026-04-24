@@ -30,7 +30,7 @@ app.add_middleware(
     allow_origins=[
         "https://equiguard-cd5ed.web.app",
         "http://localhost:3000",
-        "http://127.0.0.1:3000"
+        "http://127.0.0.1:3000",
         "https://equi-guard-roan.vercel.app"
     ],
     allow_credentials=True,
