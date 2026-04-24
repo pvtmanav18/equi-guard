@@ -5,12 +5,13 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, Upload, ShieldAlert, Database, BarChart3,
   FileText, Clock, Settings, Shield, Plus,
-  Sparkles, LogOut
+  Sparkles, LogOut, Sun, Moon
 } from "lucide-react";
 import { useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "./sidebar-context";
 import { useAuth } from "@/components/auth-context";
+import { useTheme } from "./theme-provider";
 
 export const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -30,6 +31,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const { expanded, setExpanded } = useSidebar();
   const { user, signOut } = useAuth();
+  const { theme, setTheme } = useTheme();
 
   const handleMouseEnter = useCallback(() => {
     setExpanded(true);
@@ -74,7 +76,7 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+      <nav className="tour-sidebar flex-1 overflow-y-auto py-4 px-3 space-y-1">
         {navItems.map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
           return (
@@ -137,8 +139,30 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* User profile */}
-      <div className="border-t border-content/[0.06] p-3 shrink-0">
+      {/* Theme Toggle & User profile */}
+      <div className="border-t border-content/[0.06] p-3 shrink-0 space-y-2">
+        <button
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          className={cn(
+            "tour-theme-toggle flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-content/50 hover:text-content/80 hover:bg-content/[0.04] border border-transparent"
+          )}
+          title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+        >
+          {theme === "dark" ? (
+            <Sun className="w-[18px] h-[18px] shrink-0 text-content/40" />
+          ) : (
+            <Moon className="w-[18px] h-[18px] shrink-0 text-content/40" />
+          )}
+          <span
+            className={cn(
+              "truncate transition-all duration-300",
+              expanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 pointer-events-none w-0 overflow-hidden"
+            )}
+          >
+            {theme === "dark" ? "Light Mode" : "Dark Mode"}
+          </span>
+        </button>
+
         <div className="flex items-center justify-between gap-3 px-1">
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-8 h-8 rounded-full bg-cta flex items-center justify-center text-cta-foreground text-xs font-bold shrink-0">

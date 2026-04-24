@@ -1,9 +1,14 @@
 "use client";
 
+import { useState } from "react";
+
 import { PageHeader, StatCard } from "@/components/page-components";
 import { useTheme } from "@/components/theme-provider";
-import { ShieldCheck, TrendingDown, Users, CheckCircle2, AlertTriangle, ArrowRight, Plus } from "lucide-react";
+import { ShieldCheck, TrendingDown, Users, CheckCircle2, AlertTriangle, ArrowRight, Plus, HelpCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import AppTour from "@/components/AppTour";
+import { DASHBOARD_STEPS } from "@/lib/tour-steps";
 
 const biasOverviewData = [
   { group: "Male", before: 78, after: 82 }, { group: "Female", before: 62, after: 79 },
@@ -47,13 +52,39 @@ export default function DashboardPage() {
     return null;
   };
 
+  const router = useRouter();
+  const [btnExpanded, setBtnExpanded] = useState(false);
+  const [tourRun, setTourRun] = useState(false);
+
   return (
     <div className="max-w-7xl mx-auto">
-      <PageHeader title="Dashboard" description="Overview of your latest fairness audits and automated decision insights."
-        action={<button className="inline-flex items-center gap-2 bg-cta text-cta-foreground text-sm font-semibold px-5 py-2.5 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05]"><Plus className="w-4 h-4" />New Audit</button>}
-      />
+      <AppTour steps={DASHBOARD_STEPS} run={tourRun} onFinish={() => setTourRun(false)} />
+      <div className="tour-dashboard-header">
+        <PageHeader title="Dashboard" description="Overview of your latest fairness audits and automated decision insights."
+          action={
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => setTourRun(true)}
+                className="group p-3 rounded-2xl bg-content/[0.04] border border-content/[0.08] hover:bg-content/[0.08] transition-all hover:border-cta/30"
+                title="Start Tour"
+              >
+                <HelpCircle className="w-6 h-6 text-content/40 group-hover:text-cta transition-colors" />
+              </button>
+              <button 
+                onMouseEnter={() => setBtnExpanded(true)}
+                onMouseLeave={() => setBtnExpanded(false)}
+                onClick={() => {router.push("/upload")}}
+                className={`tour-new-audit inline-flex items-center justify-center gap-2 bg-cta text-white text-md font-semibold h-[48px] rounded-2xl transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-cta shadow-lg shadow-content/[0.05] overflow-hidden ${btnExpanded ? "w-[150px] px-5" : "w-[48px] px-0"}`}
+              >
+                <Plus className="w-5 h-5 shrink-0" />
+                <span className={`whitespace-nowrap transition-all duration-300 ${btnExpanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 hidden"}`}>New Audit</span>
+              </button>
+            </div>
+          }
+        />
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8 mb-8 md:mb-8">
+      <div className="tour-stats-overview grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8 mb-8 md:mb-8">
         <StatCard label="Overall Bias Score" value="0.72" subtitle="From 0.73 to 0.24" icon={ShieldCheck} trend={{ value: "High Bias", positive: false }} />
         <StatCard label="Disparity Reduction" value="66.7%" icon={TrendingDown} trend={{ value: "↓ 0.86 after synthesis", positive: true }} />
         <StatCard label="Decisions Audited" value="10,000" subtitle="6,000 original + 4,000 synthetic" icon={Users} />
@@ -61,13 +92,13 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
-        <div className="lg:col-span-2 glass-card rounded-xl p-4 md:p-6">
+        <div className="tour-bias-chart lg:col-span-2 glass-card rounded-xl p-4 md:p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-sm font-semibold text-content">Bias Overview (Before vs After)</h3>
-              <p className="text-xs text-content/30 mt-0.5">Decision scores across demographic breakdowns</p>
+              <h3 className="text-md font-semibold text-content">Bias Overview (Before vs After)</h3>
+              <p className="text-sm text-content/30 mt-0.5">Decision scores across demographic breakdowns</p>
             </div>
-            <div className="flex items-center gap-4 text-xs">
+            <div className="flex items-center gap-4 text-sm">
               <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-muted-foreground/40 " /><span className="text-muted-foreground">Before</span></span>
               <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-primary" /><span className="text-primary">After</span></span>
             </div>
@@ -84,14 +115,14 @@ export default function DashboardPage() {
           </ResponsiveContainer>
         </div>
 
-        <div className="glass-card rounded-xl p-4 md:p-6">
-          <h3 className="text-sm md:text-base font-semibold text-content mb-1">Bias Metrics</h3>
-          <p className="text-xs text-content/30 mb-5">Key fairness indicators</p>
+        <div className="tour-bias-metrics glass-card rounded-xl p-4 md:p-6">
+          <h3 className="text-md md:text-base font-semibold text-content mb-1">Bias Metrics</h3>
+          <p className="text-sm text-content/30 mb-5">Key fairness indicators</p>
           <div className="space-y-4">
             {biasMetrics.map((m) => (
               <div key={m.metric} className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-content/60">{m.metric}</p>
+                  <p className="text-sm text-content/60">{m.metric}</p>
                   <div className="flex items-center gap-2 mt-0.5">
                     <span className="text-sm font-semibold text-content/40">{m.before || m.value}</span>
                     <ArrowRight className="w-3 h-3 text-content/20" />
@@ -102,34 +133,34 @@ export default function DashboardPage() {
               </div>
             ))}
           </div>
-          <button className="mt-5 text-xs text-content/50 hover:text-content/80 transition-colors flex items-center gap-1">View all metrics <ArrowRight className="w-3 h-3" /></button>
+          <button className="mt-5 text-sm text-content/50 hover:text-content/80 transition-colors flex items-center gap-1">View all metrics <ArrowRight className="w-3 h-3" /></button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-        <div className="glass-card rounded-xl p-4 md:p-6">
+        <div className="tour-ai-explanation glass-card rounded-xl p-4 md:p-6">
           <div className="flex items-center gap-2 mb-3 md:mb-4">
             <AlertTriangle className="w-4 h-4 text-content/60" />
-            <h3 className="text-sm md:text-base font-semibold text-content">AI Explanation (Why is this happening?)</h3>
+            <h3 className="text-md md:text-base font-semibold text-content">AI Explanation (Why is this happening?)</h3>
           </div>
-          <p className="text-xs md:text-sm text-content/50 leading-relaxed mb-4 md:mb-5">{explanations[0].content}</p>
+          <p className="text-md md:text-md text-content/50 leading-relaxed mb-4 md:mb-5">{explanations[0].content}</p>
           <div className="flex flex-wrap gap-3 mb-4">
             {["66% Top-10 Biased", "Male Sig. Overrep'd", "Gender Top Feature", "Selection Gap → 23%"].map((tag) => (
-              <span key={tag} className="text-[11px] text-content/50 bg-content/[0.04] border border-content/[0.06] px-2.5 py-1 rounded-full">{tag}</span>
+              <span key={tag} className="text-[12px] text-content/50 bg-content/[0.04] border border-content/[0.06] px-2.5 py-1 rounded-full">{tag}</span>
             ))}
           </div>
-          <button className="text-xs text-content/50 hover:text-content/80 transition-colors flex items-center gap-1">View Full Explanation <ArrowRight className="w-3 h-3" /></button>
+          <button className="text-sm text-content/50 hover:text-content/80 transition-colors flex items-center gap-1">View Full Explanation <ArrowRight className="w-3 h-3" /></button>
         </div>
 
         <div className="glass-card rounded-xl p-8 md:p-6">
-          <h3 className="text-xl md:text-base font-semibold text-content mb-1">Top Fairness Features</h3>
-          <p className="text-[15px] md:text-xs text-content/30 mb-4 md:mb-5">What We Did — Impact breakdown</p>
+          <h3 className="text-md md:text-md font-semibold text-content mb-1">Top Fairness Features</h3>
+          <p className="text-md md:text-sm text-content/30 mb-4 md:mb-5">What We Did — Impact breakdown</p>
           <div className="space-y-3">
             {topFeatures.map((f) => (
               <div key={f.name}>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[12px] md:text-xs text-content/60">{f.name}</span>
-                  <span className={`text-[12px] md:text-xs font-medium ${f.type === "bias" ? "text-content/40" : "text-content/70"}`}>{(f.impact * 100).toFixed(0)}%</span>
+                  <span className="text-[12px] md:text-sm text-content/60">{f.name}</span>
+                  <span className={`text-[12px] md:text-sm font-medium ${f.type === "bias" ? "text-content/40" : "text-content/70"}`}>{(f.impact * 100).toFixed(0)}%</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full bg-content/[0.04]">
                   <div className={`h-full rounded-full transition-all duration-700 ${f.type === "bias" ? "bg-gradient-to-r from-content/30 to-content/15" : "bg-gradient-to-r from-content/50 to-content/30"}`} style={{ width: `${f.impact * 100}%` }} />
@@ -137,7 +168,7 @@ export default function DashboardPage() {
               </div>
             ))}
           </div>
-          <button className="mt-5 text-xs text-content/50 hover:text-content/80 transition-colors flex items-center gap-1">View Feature Impact <ArrowRight className="w-3 h-3" /></button>
+          <button className="mt-5 text-sm text-content/50 hover:text-content/80 transition-colors flex items-center gap-1">View Feature Impact <ArrowRight className="w-3 h-3" /></button>
         </div>
       </div>
     </div>

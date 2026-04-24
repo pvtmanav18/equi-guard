@@ -4,6 +4,10 @@ import { PageHeader } from "@/components/page-components";
 import { Search, Filter, ArrowRight, ArrowUpRight, Eye, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
+import { HelpCircle } from "lucide-react";
+import AppTour from "@/components/AppTour";
+import { HISTORY_STEPS } from "@/lib/tour-steps";
+
 const historyData = [
   { name: "Hiring_Data.csv", type: "Dataset + Model", scoreBefore: "0.72", scoreAfter: "0.24", status: "Improved", date: "11 May 2026" },
   { name: "Loan_Approval.csv", type: "Dataset", scoreBefore: "0.65", scoreAfter: "0.18", status: "Improved", date: "11 May 2026" },
@@ -15,11 +19,27 @@ const historyData = [
 export default function HistoryPage() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [tourRun, setTourRun] = useState(false);
   const filtered = historyData.filter((d) => d.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="max-w-6xl mx-auto">
-      <PageHeader title="History" description="View and manage your previous analyses." />
+      <AppTour steps={HISTORY_STEPS} run={tourRun} onFinish={() => setTourRun(false)} />
+      <div className="tour-history-header">
+        <PageHeader 
+          title="History" 
+          description="View and manage your previous analyses." 
+          action={
+            <button 
+              onClick={() => setTourRun(true)}
+              className="group p-3 rounded-2xl bg-content/[0.04] border border-content/[0.08] hover:bg-content/[0.08] transition-all hover:border-cta/30"
+              title="Start Tour"
+            >
+              <HelpCircle className="w-6 h-6 text-content/40 group-hover:text-cta transition-colors" />
+            </button>
+          }
+        />
+      </div>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div className="relative w-full sm:w-80">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-content/30" />
@@ -30,7 +50,7 @@ export default function HistoryPage() {
           <button className="inline-flex items-center gap-2 text-xs text-content/50 bg-content/[0.04] border border-content/[0.08] px-3 py-2 rounded-lg hover:bg-content/[0.06] transition-all">All Status</button>
         </div>
       </div>
-      <div className="glass-card rounded-xl overflow-hidden">
+      <div className="tour-history-table glass-card rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead><tr className="border-b border-content/[0.06]">{["Dataset Name", "Type", "Bias Score (Before → After)", "Status", "Date", "Actions"].map((col) => (<th key={col} className="text-left text-[11px] font-medium text-content/40 uppercase tracking-wider px-5 py-4">{col}</th>))}</tr></thead>

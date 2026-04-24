@@ -3,7 +3,13 @@
 import { PageHeader } from "@/components/page-components";
 import { useTheme } from "@/components/theme-provider";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { Sliders, RefreshCw, Save, Globe, Sun, Moon, Monitor } from "lucide-react";
+
+import { HelpCircle } from "lucide-react";
+import AppTour from "@/components/AppTour";
+import { SETTINGS_STEPS } from "@/lib/tour-steps";
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
@@ -12,6 +18,7 @@ export default function SettingsPage() {
   const [notifications, setNotifications] = useState(true);
   const [synthesize, setSynthesize] = useState(false);
   const [language, setLanguage] = useState("en");
+  const [tourRun, setTourRun] = useState(false);
 
   const Toggle = ({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) => (
     <button onClick={onToggle} className={`relative w-11 h-6 rounded-full transition-all duration-300 ${enabled ? "bg-cta" : "bg-content/[0.1]"}`}>
@@ -19,11 +26,37 @@ export default function SettingsPage() {
     </button>
   );
 
+   const router = useRouter();
+  const [btnExpanded, setBtnExpanded] = useState(false);
   return (
     <div className="max-w-3xl mx-auto">
-      <PageHeader title="Settings" description="Configure your preferences and analysis options."
-        action={<button className="inline-flex items-center gap-2 bg-cta text-cta-foreground text-sm font-semibold px-4 py-2.5 md:px-5 md:py-2.5 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05]"><Save className="w-4 h-4" /></button>}
-      />
+      <AppTour steps={SETTINGS_STEPS} run={tourRun} onFinish={() => setTourRun(false)} />
+      <div className="tour-settings-header">
+        <PageHeader 
+          title="Settings" 
+          description="Configure your preferences and analysis options."
+          action={
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => setTourRun(true)}
+                className="group p-3 rounded-2xl bg-content/[0.04] border border-content/[0.08] hover:bg-content/[0.08] transition-all hover:border-cta/30"
+                title="Start Tour"
+              >
+                <HelpCircle className="w-6 h-6 text-content/40 group-hover:text-cta transition-colors" />
+              </button>
+              <button 
+                onMouseEnter={() => setBtnExpanded(true)}
+                onMouseLeave={() => setBtnExpanded(false)}
+                onClick={() => {router.push("/upload")}}
+                className={`inline-flex items-center justify-center gap-2 bg-cta text-white text-md font-semibold h-[48px] rounded-2xl transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-cta shadow-lg shadow-content/[0.05] overflow-hidden ${btnExpanded ? "w-[100px] px-5" : "w-[48px] px-0"}`}
+              >
+                <Save className="w-5 h-5 shrink-0" />
+                <span className={`whitespace-nowrap transition-all duration-300 ${btnExpanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 hidden"}`}>Save</span>
+              </button>
+            </div>
+          }
+        />
+      </div>
       <div className="space-y-6">
         {/* Appearance */}
         <div className="glass-card rounded-xl p-6">
@@ -95,7 +128,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Auto-fix Options */}
-        <div className="glass-card rounded-xl p-6">
+        <div className="tour-api-keys glass-card rounded-xl p-6">
           <div className="flex items-center gap-2 mb-6"><RefreshCw className="w-4 h-4 text-content/60" /><h3 className="text-sm font-semibold text-content">Auto-fix Options</h3></div>
           <div className="space-y-5">
             <div className="flex items-center justify-between"><div><p className="text-sm font-medium text-content/70">Enable Auto-Fix Recommendations</p><p className="text-xs text-content/30 mt-0.5">Automatically suggest bias mitigation strategies</p></div><Toggle enabled={autoFix} onToggle={() => setAutoFix(!autoFix)} /></div>
@@ -117,8 +150,7 @@ export default function SettingsPage() {
 
         {/* Danger Zone */}
         <div className="glass-card rounded-xl p-6 border-content/[0.08]">
-          <h3 className="text-sm font-semibold text-content/80 mb-4">Danger Zone</h3>
-          <div className="flex items-center justify-between"><div><p className="text-sm font-medium text-content/70">Reset All Settings</p><p className="text-xs text-content/30 mt-0.5">This will restore all settings to their default values</p></div><button className="text-xs font-medium text-content/70 bg-content/[0.08] hover:bg-content/[0.12] border border-content/[0.12] px-4 py-2 rounded-lg transition-all">Reset</button></div>
+          <div className="flex items-center justify-between"><div><p className="text-sm font-medium text-content/70">Reset All Settings</p><p className="text-xs text-content/30 mt-0.5">This will restore all settings to their default values</p></div><button className="text-xs font-medium text-destructive/0 bg-content/[0.08] hover:bg-content/[0.12] border border-content/[0.12] px-4 py-2 rounded-lg transition-all">Reset</button></div>
         </div>
       </div>
     </div>

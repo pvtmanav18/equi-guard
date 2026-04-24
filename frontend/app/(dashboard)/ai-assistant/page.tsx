@@ -19,6 +19,10 @@ import {
   updateDoc
 } from "firebase/firestore";
 
+import { HelpCircle } from "lucide-react";
+import AppTour from "@/components/AppTour";
+import { AI_ASSISTANT_STEPS } from "@/lib/tour-steps";
+
 type Message = { role: "user" | "assistant"; content: string };
 type ChatSession = { id: string; title: string; date: string; messages: Message[]; updatedAt?: any };
 
@@ -37,6 +41,7 @@ export default function AIAssistantPage() {
   const [isTyping, setIsTyping] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showMobileHistory, setShowMobileHistory] = useState(false);
+  const [tourRun, setTourRun] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const activeSession = sessions.find(s => s.id === activeId) || sessions[0];
@@ -229,22 +234,34 @@ export default function AIAssistantPage() {
 
   return (
     <div className="max-w-7xl mx-auto h-[calc(100vh-6rem)]">
-      <PageHeader 
-        title="EquiGuard Assistant" 
-        description="Get answers about bias, fairness, and your data." 
-        action={
-          <div className="flex items-center gap-2 lg:hidden">
-            <button onClick={createNewChat} className="flex items-center justify-center w-9 h-9 text-content/70 bg-content/[0.04] border border-content/[0.08] rounded-lg hover:bg-content/[0.06] transition-all" title="New Chat">
-              <Plus className="w-4 h-4" />
-            </button>
-            <button onClick={() => setShowMobileHistory(!showMobileHistory)} className={`flex items-center justify-center w-9 h-9 text-content/70 bg-content/[0.04] border border-content/[0.08] rounded-lg hover:bg-content/[0.06] transition-all ${showMobileHistory ? 'bg-content/[0.08]' : ''}`} title={showMobileHistory ? "Hide History" : "View History"}>
-              <Clock className="w-4 h-4" />
-            </button>
-          </div>
-        }
-      />
+      <AppTour steps={AI_ASSISTANT_STEPS} run={tourRun} onFinish={() => setTourRun(false)} />
+      <div className="tour-ai-header">
+        <PageHeader 
+          title="EquiGuard Assistant" 
+          description="Get answers about bias, fairness, and your data." 
+          action={
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => setTourRun(true)}
+                className="group p-3 rounded-2xl bg-content/[0.04] border border-content/[0.08] hover:bg-content/[0.08] transition-all hover:border-cta/30"
+                title="Start Tour"
+              >
+                <HelpCircle className="w-6 h-6 text-content/40 group-hover:text-cta transition-colors" />
+              </button>
+              <div className="flex items-center gap-2 lg:hidden">
+                <button onClick={createNewChat} className="flex items-center justify-center w-9 h-9 text-content/70 bg-content/[0.04] border border-content/[0.08] rounded-lg hover:bg-content/[0.06] transition-all" title="New Chat">
+                  <Plus className="w-4 h-4" />
+                </button>
+                <button onClick={() => setShowMobileHistory(!showMobileHistory)} className={`flex items-center justify-center w-9 h-9 text-content/70 bg-content/[0.04] border border-content/[0.08] rounded-lg hover:bg-content/[0.06] transition-all ${showMobileHistory ? 'bg-content/[0.08]' : ''}`} title={showMobileHistory ? "Hide History" : "View History"}>
+                  <Clock className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          }
+        />
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6 h-[calc(100%-5rem)] flex-1">
-        <div className={`${showMobileHistory ? "flex" : "hidden"} lg:flex flex-col glass-card rounded-xl overflow-hidden max-h-60 lg:max-h-none shrink-0 mb-4 lg:mb-0`}>
+        <div className={`tour-ai-capabilities ${showMobileHistory ? "flex" : "hidden"} lg:flex flex-col glass-card rounded-xl overflow-hidden max-h-60 lg:max-h-none shrink-0 mb-4 lg:mb-0`}>
           <div className="p-4 border-b border-content/[0.06]">
             <button onClick={createNewChat} className="w-full flex items-center justify-center gap-2 text-xs font-medium text-content/70 bg-content/[0.06] hover:bg-content/[0.1] border border-content/[0.1] px-4 py-2.5 rounded-lg transition-all">
               <Plus className="w-3.5 h-3.5" />New Chat
@@ -266,7 +283,7 @@ export default function AIAssistantPage() {
             ))}
           </div>
         </div>
-        <div className="lg:col-span-3 glass-card rounded-xl flex flex-col overflow-hidden">
+        <div className="tour-chat-interface lg:col-span-3 glass-card rounded-xl flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 md:space-y-6">
             {messages.map((msg, i) => (
               <div key={i} className={`flex gap-2 md:gap-3 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
@@ -286,7 +303,7 @@ export default function AIAssistantPage() {
             {isTyping && (<div className="flex gap-2 md:gap-3"><div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-content/[0.08] flex items-center justify-center shrink-0"><Bot className="w-3 h-3 md:w-4 md:h-4 text-content/60" /></div><div className="bg-content/[0.03] border border-content/[0.06] rounded-2xl px-4 py-3 md:px-5 md:py-4"><div className="flex gap-1.5"><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-content/20 animate-pulse" /><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-content/20 animate-pulse [animation-delay:200ms]" /><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-content/20 animate-pulse [animation-delay:400ms]" /></div></div></div>)}
             <div ref={messagesEndRef} />
           </div>
-          {messages.length <= 1 && (<div className="px-6 pb-2 flex flex-wrap gap-2">{suggestedPrompts.map((prompt) => (<button key={prompt} onClick={() => setInput(prompt)} className="text-xs text-content/40 bg-content/[0.03] border border-content/[0.06] px-3 py-1.5 rounded-full hover:bg-content/[0.06] hover:text-content/60 transition-all">{prompt}</button>))}</div>)}
+          {messages.length <= 1 && (<div className="tour-suggested-questions px-6 pb-2 flex flex-wrap gap-2">{suggestedPrompts.map((prompt) => (<button key={prompt} onClick={() => setInput(prompt)} className="text-xs text-content/40 bg-content/[0.03] border border-content/[0.06] px-3 py-1.5 rounded-full hover:bg-content/[0.06] hover:text-content/60 transition-all">{prompt}</button>))}</div>)}
           <div className="border-t border-content/[0.06] p-4">
             <div className="flex items-center gap-3">
               <input type="text" placeholder="Ask anything about bias or fairness..." value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && sendMessage()} className="flex-1 bg-content/[0.03] border border-content/[0.08] rounded-xl px-4 py-3 text-sm text-content/80 focus:outline-none focus:border-content/30 focus:ring-2 focus:ring-content/10 transition-all dynamic-placeholder" />
