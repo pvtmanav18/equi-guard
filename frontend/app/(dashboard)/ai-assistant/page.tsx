@@ -282,11 +282,11 @@ export default function AIAssistantPage() {
                 <HelpCircle className="w-5 h-5 text-content/40 group-hover:text-cta transition-colors" />
               </button>
               <div className="flex items-center gap-2 lg:hidden">
-                <button onClick={createNewChat} className="flex items-center justify-center w-9 h-9 text-content/70 bg-content/[0.04] border border-content/[0.08] rounded-lg hover:bg-content/[0.06] transition-all" title="New Chat">
-                  <Plus className="w-4 h-4" />
+                <button onClick={createNewChat} className="flex items-center justify-center w-10 h-10 text-content/70 bg-content/[0.04] border border-content/[0.08] rounded-lg hover:bg-content/[0.06] transition-all" title="New Chat">
+                  <Plus className="w-6 h-6" />
                 </button>
-                <button onClick={() => setShowMobileHistory(!showMobileHistory)} className={`flex items-center justify-center w-9 h-9 text-content/70 bg-content/[0.04] border border-content/[0.08] rounded-lg hover:bg-content/[0.06] transition-all ${showMobileHistory ? 'bg-content/[0.08]' : ''}`} title={showMobileHistory ? "Hide History" : "View History"}>
-                  <Clock className="w-4 h-4" />
+                <button onClick={() => setShowMobileHistory(!showMobileHistory)} className={`flex items-center justify-center w-10 h-10 text-content/70 bg-content/[0.04] border border-content/[0.08] rounded-lg hover:bg-content/[0.06] transition-all ${showMobileHistory ? 'bg-content/[0.08]' : ''}`} title={showMobileHistory ? "Hide History" : "View History"}>
+                  <Clock className="w-6 h-6" />
                 </button>
               </div>
             </div>
@@ -305,13 +305,13 @@ export default function AIAssistantPage() {
             </button>
           </div>
           <div className="flex-1 overflow-y-auto p-3 space-y-1">
-            <p className="text-[10px] font-medium text-content/20 uppercase tracking-widest px-3 mb-2">Chat History</p>
+            <p className="text-[13px] md:text-[10px] font-medium text-content/20 uppercase tracking-widest px-3 mb-2">Chat History</p>
             {sessions.map((chat) => (
               <button key={chat.id} onClick={() => { setActiveId(chat.id); setShowMobileHistory(false); }} className={`group w-full text-left flex items-start gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-all ${chat.id === activeId ? "bg-content/[0.08] text-content border border-content/[0.12]" : "text-content/40 hover:text-content/60 hover:bg-content/[0.04]"}`}>
                 <MessageSquare className="w-3.5 h-3.5 shrink-0 mt-0.5" />
                 <div className="flex-1 overflow-hidden">
-                  <p className="text-xs font-medium truncate">{chat.title}</p>
-                  <p className="text-[10px] text-content/20 mt-0.5">{chat.date}</p>
+                  <p className="text-[14px] md:text-xs font-medium truncate">{chat.title}</p>
+                  <p className="text-[12px] md:text-[10px] text-content/20 mt-0.5">{chat.date}</p>
                 </div>
                 {!isDemoUser && (
                   <div onClick={(e) => deleteChat(e, chat.id)} className="opacity-0 group-hover:opacity-100 p-1 hover:bg-content/[0.1] rounded transition-all">
@@ -325,9 +325,9 @@ export default function AIAssistantPage() {
         <div className="tour-chat-interface lg:col-span-3 glass-card rounded-xl flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 md:space-y-6">
             {messages.map((msg, i) => (
-              <div key={i} className={`flex gap-2 md:gap-3 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                {msg.role === "assistant" && (<div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-content/[0.08] flex items-center justify-center shrink-0 mt-1"><Bot className="w-3 h-3 md:w-4 md:h-4 text-content/60" /></div>)}
-                <div className={`max-w-[85%] md:max-w-[75%] rounded-2xl px-4 py-3 md:px-5 md:py-3.5 text-xs md:text-sm leading-relaxed whitespace-pre-wrap ${msg.role === "user" ? "bg-content/[0.08] text-content/90 border border-content/[0.12]" : "bg-content/[0.03] text-content/70 border border-content/[0.06]"}`}>
+              <div key={i} className={`flex gap-3 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                {msg.role === "assistant" && (<div className="w-8 h-8 rounded-lg bg-content/[0.08] flex items-center justify-center shrink-0 mt-1"><Bot className="w-5 h-5 md:w-4 md:h-4 text-content/60" /></div>)}
+                <div className={`max-w-[90%] md:max-w-[75%] rounded-2xl px-4 py-3 md:px-5 md:py-3.5 text-md md:text-sm leading-relaxed whitespace-pre-wrap ${msg.role === "user" ? "bg-content/[0.08] text-content/90 border border-content/[0.12]" : "bg-content/[0.03] text-content/70 border border-content/[0.06]"}`}>
                   {msg.content.split(/(\*\*.*?\*\*)/g).map((part, k) => {
                     if (part.startsWith("**") && part.endsWith("**")) {
                       return <strong key={k} className="text-content font-bold">{part.slice(2, -2)}</strong>;
@@ -336,21 +336,21 @@ export default function AIAssistantPage() {
                   })}
                 </div>
 
-                {msg.role === "user" && (<div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-content/[0.08] flex items-center justify-center shrink-0 mt-1"><User className="w-3 h-3 md:w-4 md:h-4 text-content/60" /></div>)}
+                {msg.role === "user" && (<div className="w-8 h-8 rounded-lg bg-content/[0.08] flex items-center justify-center shrink-0 mt-1"><User className="w-5 h-5 md:w-4 md:h-4 text-content/60" /></div>)}
               </div>
             ))}
             {isTyping && (<div className="flex gap-2 md:gap-3"><div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-content/[0.08] flex items-center justify-center shrink-0"><Bot className="w-3 h-3 md:w-4 md:h-4 text-content/60" /></div><div className="bg-content/[0.03] border border-content/[0.06] rounded-2xl px-4 py-3 md:px-5 md:py-4"><div className="flex gap-1.5"><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-content/20 animate-pulse" /><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-content/20 animate-pulse [animation-delay:200ms]" /><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-content/20 animate-pulse [animation-delay:400ms]" /></div></div></div>)}
             <div ref={messagesEndRef} />
           </div>
-          {!isDemoUser && messages.length <= 1 && (<div className="tour-suggested-questions px-6 pb-2 flex flex-wrap gap-2">{suggestedPrompts.map((prompt) => (<button key={prompt} onClick={() => setInput(prompt)} className="text-xs text-content/40 bg-content/[0.03] border border-content/[0.06] px-3 py-1.5 rounded-full hover:bg-content/[0.06] hover:text-content/60 transition-all">{prompt}</button>))}</div>)}
+          {!isDemoUser && messages.length <= 1 && (<div className="tour-suggested-questions px-6 pb-2 flex flex-wrap gap-2">{suggestedPrompts.map((prompt) => (<button key={prompt} onClick={() => setInput(prompt)} className="text-md md:text-xs text-content/40 bg-content/[0.03] border border-content/[0.06] px-3 py-1.5 rounded-full hover:bg-content/[0.06] hover:text-content/60 transition-all">{prompt}</button>))}</div>)}
           <div className="border-t border-content/[0.06] p-4 relative">
             {isDemoUser && (
               <div className="absolute inset-0 z-10 bg-background/60 backdrop-blur-[2px] flex items-center justify-center p-4">
                 <button
                   onClick={handleSignOut}
-                  className="bg-content text-background px-6 py-2.5 rounded-full text-xs font-bold flex items-center gap-2 shadow-xl shadow-content/20 hover:scale-105 transition-transform"
+                  className="bg-content text-background px-6 py-2.5 rounded-full text-md md:text-sm font-bold flex items-center gap-2 shadow-xl shadow-content/20 hover:scale-105 transition-transform"
                 >
-                  <Bot className="w-3.5 h-3.5" />
+                  <Bot className="w-4 h-4" />
                   Sign up to use EquiGuard Assistant
                 </button>
               </div>
@@ -362,15 +362,15 @@ export default function AIAssistantPage() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                className="flex-1 bg-content/[0.03] border border-content/[0.08] rounded-xl px-4 py-3 text-sm text-content/80 focus:outline-none focus:border-content/30 focus:ring-2 focus:ring-content/10 transition-all dynamic-placeholder"
+                className="flex-1 bg-content/[0.03] border border-content/[0.08] rounded-xl px-4 py-3 text-lg md:text-sm text-content/80 focus:outline-none focus:border-content/30 focus:ring-2 focus:ring-content/10 transition-all dynamic-placeholder"
                 disabled={isDemoUser}
               />
               <button
                 onClick={sendMessage}
                 disabled={!input.trim() || isDemoUser}
-                className="w-10 h-10 rounded-xl disabled:bg-content/[0.06] flex items-center justify-center transition-all shadow-lg shadow-content/[0.05] disabled:shadow-none shrink-0 dynamic-send-button"
+                className="w-12 h-12 rounded-xl disabled:bg-content/[0.06] flex items-center justify-center transition-all shadow-lg shadow-content/[0.05] disabled:shadow-none shrink-0 dynamic-send-button"
               >
-                <Send className="w-4 h-4 text-cta-foreground" />
+                <Send className="w-5 h-5 text-cta-foreground" />
               </button>
             </div>
           </div>

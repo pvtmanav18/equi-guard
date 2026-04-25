@@ -107,8 +107,8 @@ function LoginForm() {
       {/* Back Button */}
       <Link href="/" className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8 z-50 flex items-center gap-2 text-[10px] sm:text-sm font-medium text-content/60 hover:text-content bg-background/50 hover:bg-content/5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full backdrop-blur-md transition-all border border-content/5 hover:scale-105">
         <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-        <span className="hidden xs:inline">Back to Home</span>
-        <span className="xs:hidden">Home</span>
+        <span className="hidden xs:inline text-xs">Back to Home</span>
+        <span className="xs:hidden text-xs">Home</span>
       </Link>
 
       {/* Background effects */}

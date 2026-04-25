@@ -164,14 +164,14 @@ export default function BiasDetectionPage() {
               </div>
               <div>
                 <div className="flex items-center justify-center sm:justify-start gap-2 mb-2"><span className="text-xs font-medium text-content/70 bg-content/[0.08] border border-content/[0.12] px-2.5 py-0.5 rounded-full">{data.biasStatus}</span></div>
-                <h3 className="text-lg font-bold text-content mb-1">Bias Score</h3>
-                <p className="text-sm text-content/40 max-w-md">The AI model demonstrates selection disparities across protected demographic groups.</p>
+                <h3 className="text-xl md:text-lg font-bold text-content mb-1">Bias Score</h3>
+                <p className="text-md md:text-sm text-content/40 max-w-md">The AI model demonstrates selection disparities across protected demographic groups.</p>
               </div>
             </div>
           </div>
           <div className="tour-disparity-chart glass-card rounded-xl p-4 md:p-6">
-            <h3 className="text-lg font-semibold text-content mb-1">Selection Rate by Group</h3>
-            <p className="text-sm text-content/30 mb-4">Hiring selection rates across demographic categories</p>
+            <h3 className="text-lg md:text-md font-semibold text-content mb-1">Selection Rate by Group</h3>
+            <p className="text-md md:text-sm text-content/30 mb-4">Hiring selection rates across demographic categories</p>
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
               <div className="w-40 h-40 md:w-48 md:h-48 shrink-0">
                 <ResponsiveContainer width="100%" height="100%">
@@ -188,24 +188,24 @@ export default function BiasDetectionPage() {
                   <div key={item.name} className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                      <span className="text-sm text-content/60">{item.name}</span>
+                      <span className="text-md md:text-sm text-content/60">{item.name}</span>
                     </div>
-                    <span className="text-sm font-semibold text-content">{item.value}%</span>
+                    <span className="text-md md:text-sm font-semibold text-content">{item.value}%</span>
                   </div>
                 ))}
               </div>
             </div>
           </div>
           <div className="glass-card rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-content mb-1">Top Biased Features</h3>
-            <p className="text-sm text-content/30 mb-5">Features contributing most to bias in the model</p>
-            <div className="space-y-4">{data.topBiasedFeatures.map((f: any) => (<div key={f.name}><div className="flex items-center justify-between mb-1.5"><span className="text-sm text-content/60">{f.name}</span><span className={`text-sm font-medium ${f.severity > 0.7 ? "text-content/80" : f.severity > 0.5 ? "text-content/60" : "text-content/40"}`}>{(f.severity * 100).toFixed(0)}% impact</span></div><div className="w-full h-2 rounded-full bg-content/[0.04]"><div className={`h-full rounded-full transition-all duration-700 ${f.severity > 0.7 ? "bg-gradient-to-r from-content/50 to-content/25" : f.severity > 0.5 ? "bg-gradient-to-r from-content/35 to-content/15" : "bg-gradient-to-r from-content/25 to-content/10"}`} style={{ width: `${f.severity * 100}%` }} /></div></div>))}</div>
+            <h3 className="text-lg md:text-md font-semibold text-content mb-1">Top Biased Features</h3>
+            <p className="text-md md:text-sm text-content/30 mb-5">Features contributing most to bias in the model</p>
+            <div className="space-y-4">{data.topBiasedFeatures.map((f: any) => (<div key={f.name}><div className="flex items-center justify-between mb-1.5"><span className="text-md md:text-sm text-content/60">{f.name}</span><span className={`text-md md:text-sm font-medium ${f.severity > 0.7 ? "text-content/80" : f.severity > 0.5 ? "text-content/60" : "text-content/40"}`}>{(f.severity * 100).toFixed(0)}% impact</span></div><div className="w-full h-2 rounded-full bg-content/[0.04]"><div className={`h-full rounded-full transition-all duration-700 ${f.severity > 0.7 ? "bg-gradient-to-r from-content/50 to-content/25" : f.severity > 0.5 ? "bg-gradient-to-r from-content/35 to-content/15" : "bg-gradient-to-r from-content/25 to-content/10"}`} style={{ width: `${f.severity * 100}%` }} /></div></div>))}</div>
           </div>
         </div>
         <div className="space-y-6">
-          <div className="tour-intersectionality glass-card rounded-xl p-6"><h3 className="text-md font-semibold text-content mb-4">Key Insights</h3><div className="space-y-3">{data.keyInsights.map((insight: string, i: number) => (<div key={i} className="flex items-start gap-3"><AlertTriangle className="w-3.5 h-3.5 text-content/50 shrink-0 mt-0.5" /><p className="text-sm text-content/50 leading-relaxed">{insight}</p></div>))}</div></div>
-          <div className="tour-metric-cards glass-card rounded-xl p-6"><h3 className="text-md font-semibold text-content mb-4">Bias Metrics Summary</h3><div className="space-y-4">{data.biasMetricsSummary.map((m: any) => (<div key={m.name} className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4"><div className="flex items-center justify-between mb-2"><span className="text-xs font-medium text-content/50">{m.name}</span><span className={`text-[10px] font-medium text-content/70 px-2 py-0.5 rounded-full ${m.status === 'fail' ? 'bg-red-500/10 text-red-400' : 'bg-green-500/10 text-green-400'}`}>{m.status.toUpperCase()}</span></div><span className="text-3xl font-bold text-content">{m.value}</span><p className="text-[11px] text-content/25 mt-1">Threshold: {m.threshold}</p></div>))}</div></div>
-          <button className="tour-apply-correction w-full glass-card rounded-xl p-4 flex items-center justify-between group hover:bg-content/[0.05] transition-all"><span className="text-sm font-medium text-content/60">View Full Analysis</span><ArrowRight className="w-4 h-4 text-content/40 group-hover:translate-x-1 transition-transform" /></button>
+          <div className="tour-intersectionality glass-card rounded-xl p-6"><h3 className="text-lg md:text-md font-semibold text-content mb-4">Key Insights</h3><div className="space-y-3">{data.keyInsights.map((insight: string, i: number) => (<div key={i} className="flex items-start gap-3"><AlertTriangle className="w-5 h-5 md:w-3.5 md:h-3.5 text-content/50 shrink-0 mt-0.5" /><p className="text-md md:text-sm text-content/50 leading-relaxed">{insight}</p></div>))}</div></div>
+          <div className="tour-metric-cards glass-card rounded-xl p-6"><h3 className="text-lg md:text-md font-semibold text-content mb-4">Bias Metrics Summary</h3><div className="space-y-4">{data.biasMetricsSummary.map((m: any) => (<div key={m.name} className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4"><div className="flex items-center justify-between mb-2"><span className="text-[13px] md:text-xs font-medium text-content/50">{m.name}</span><span className={`text-[13px] md:text-[10px] font-medium text-content/70 px-2 py-0.5 rounded-full ${m.status === 'fail' ? 'bg-red-500/10 text-red-400' : 'bg-green-500/10 text-green-400'}`}>{m.status.toUpperCase()}</span></div><span className="text-3xl font-bold text-content">{m.value}</span><p className="text-[13px] md:text-[11px] text-content/25 mt-1">Threshold: {m.threshold}</p></div>))}</div></div>
+          <button className="tour-apply-correction w-full glass-card rounded-xl p-4 flex items-center justify-between group hover:bg-content/[0.05] transition-all"><span className="text-md font-medium text-content/60">View Full Analysis</span><ArrowRight className="w-5 h-5 md:w-4 md:h-4 text-content/40 group-hover:translate-x-1 transition-transform" /></button>
         </div>
       </div>
     </div>

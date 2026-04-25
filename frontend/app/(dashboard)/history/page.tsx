@@ -77,12 +77,12 @@ export default function HistoryPage() {
       </div>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div className="relative w-full sm:w-80">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-content/30" />
-          <input type="text" placeholder="Search analyses..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-full bg-content/[0.03] border border-content/[0.08] rounded-lg pl-10 pr-4 py-2.5 text-sm text-content/80 placeholder:text-content/20 focus:outline-none focus:border-content/30 focus:ring-2 focus:ring-content/10 transition-all" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 md:w-4 md:h-4 text-content/30" />
+          <input type="text" placeholder="Search analyses..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-full bg-content/[0.03] border border-content/[0.08] rounded-lg pl-10 pr-4 py-2.5 text-md md:text-sm text-content/80 placeholder:text-content/20 focus:outline-none focus:border-content/30 focus:ring-2 focus:ring-content/10 transition-all" />
         </div>
         <div className="flex items-center gap-2">
-          <button className="inline-flex items-center gap-2 text-xs text-content/50 bg-content/[0.04] border border-content/[0.08] px-3 py-2 rounded-lg hover:bg-content/[0.06] transition-all"><Filter className="w-3 h-3" />All Datasets</button>
-          <button className="inline-flex items-center gap-2 text-xs text-content/50 bg-content/[0.04] border border-content/[0.08] px-3 py-2 rounded-lg hover:bg-content/[0.06] transition-all">All Status</button>
+          <button className="inline-flex items-center gap-2 text-md md:text-xs text-content/50 bg-content/[0.04] border border-content/[0.08] px-3 py-2 rounded-lg hover:bg-content/[0.06] transition-all"><Filter className="w-4 h-4 md:w-3 md:h-3" />All Datasets</button>
+          <button className="inline-flex items-center gap-2 text-md md:text-xs text-content/50 bg-content/[0.04] border border-content/[0.08] px-3 py-2 rounded-lg hover:bg-content/[0.06] transition-all">All Status</button>
         </div>
       </div>
       {loading ? (
@@ -100,29 +100,29 @@ export default function HistoryPage() {
         <div className="tour-history-table glass-card rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead><tr className="border-b border-content/[0.06]">{["Dataset Name", "Type", "Bias Score (Before → After)", "Status", "Date", "Actions"].map((col) => (<th key={col} className="text-left text-[11px] font-medium text-content/40 uppercase tracking-wider px-5 py-4">{col}</th>))}</tr></thead>
+              <thead><tr className="border-b border-content/[0.06]">{["Dataset Name", "Type", "Bias Score (Before → After)", "Status", "Date", "Actions"].map((col) => (<th key={col} className="text-left text-[13px] md:text-[11px] font-medium text-content/40 uppercase tracking-wider px-5 py-4">{col}</th>))}</tr></thead>
               <tbody>{filtered.map((row, i) => (
                 <tr key={i} className="border-b border-content/[0.04] last:border-0 hover:bg-content/[0.02] transition-colors">
-                  <td className="px-5 py-4"><span className="text-sm font-medium text-content/80">{row.name}</span></td>
-                  <td className="px-5 py-4"><span className="text-xs text-content/40 bg-content/[0.04] border border-content/[0.06] px-2 py-0.5 rounded-full">{row.type}</span></td>
-                  <td className="px-5 py-4"><div className="flex items-center gap-2"><span className="text-sm font-semibold text-content/40">{row.scoreBefore}</span><ArrowRight className="w-3 h-3 text-content/20" /><span className="text-sm font-semibold text-content/80">{row.scoreAfter}</span></div></td>
-                  <td className="px-5 py-4"><span className={`text-[10px] font-medium uppercase tracking-wider px-2.5 py-1 rounded-full ${row.status === "Improved" ? "text-content/70 bg-content/[0.08]" : "text-content/50 bg-content/[0.05]"}`}>{row.status}</span></td>
-                  <td className="px-5 py-4 text-sm text-content/40">{row.date}</td>
-                  <td className="px-5 py-4"><div className="flex gap-1">
-                    <button className="w-7 h-7 rounded-lg bg-content/[0.04] hover:bg-content/[0.08] flex items-center justify-center transition-all"><Eye className="w-3.5 h-3.5 text-content/40" /></button>
-                    <button className="w-7 h-7 rounded-lg bg-content/[0.04] hover:bg-content/[0.08] flex items-center justify-center transition-all"><ArrowUpRight className="w-3.5 h-3.5 text-content/40" /></button>
-                    <button className="w-7 h-7 rounded-lg bg-content/[0.04] hover:bg-content/[0.08] flex items-center justify-center transition-all group"><Trash2 className="w-3.5 h-3.5 text-content/40 group-hover:text-content/70" /></button>
+                  <td className="px-5 py-4 whitespace-nowrap"><span className="text-md md:text-sm font-medium text-content/80">{row.name}</span></td>
+                  <td className="px-5 py-4 whitespace-nowrap"><span className="text-[13px] md:text-xs text-content/40 bg-content/[0.04] border border-content/[0.06] px-2 py-0.5 rounded-full">{row.type}</span></td>
+                  <td className="px-5 py-4 whitespace-nowrap"><div className="flex items-center gap-2"><span className="text-md md:text-sm font-semibold text-content/40">{row.scoreBefore}</span><ArrowRight className="w-4 h-4 md:w-3 md:h-3 text-content/20" /><span className="text-md md:text-sm font-semibold text-content/80">{row.scoreAfter}</span></div></td>
+                  <td className="px-5 py-4 whitespace-nowrap"><span className={`text-[13px] md:text-[10px] font-medium uppercase tracking-wider px-2.5 py-1 rounded-full ${row.status === "Improved" ? "text-content/70 bg-content/[0.08]" : "text-content/50 bg-content/[0.05]"}`}>{row.status}</span></td>
+                  <td className="px-5 py-4 whitespace-nowrap text-md md:text-sm text-content/40">{row.date}</td>
+                  <td className="px-5 py-4 whitespace-nowrap"><div className="flex gap-1">
+                    <button className="w-8 h-8 rounded-lg bg-content/[0.04] hover:bg-content/[0.08] flex items-center justify-center transition-all"><Eye className="w-5 h-5 md:w-3.5 md:h-3.5 text-content/40" /></button>
+                    <button className="w-8 h-8 rounded-lg bg-content/[0.04] hover:bg-content/[0.08] flex items-center justify-center transition-all"><ArrowUpRight className="w-5 h-5 md:w-3.5 md:h-3.5 text-content/40" /></button>
+                    <button className="w-8 h-8 rounded-lg bg-content/[0.04] hover:bg-content/[0.08] flex items-center justify-center transition-all group"><Trash2 className="w-5 h-5 md:w-3.5 md:h-3.5 text-content/40 group-hover:text-content/70" /></button>
                   </div></td>
                 </tr>
               ))}</tbody>
             </table>
           </div>
           <div className="border-t border-content/[0.06] px-5 py-3 flex items-center justify-between">
-            <p className="text-xs text-content/30">Showing {filtered.length} of {data.length} analyses</p>
+            <p className="text-[13px] md:text-xs text-content/30">Showing {filtered.length} of {data.length} analyses</p>
             <div className="flex items-center gap-1">
-              <button onClick={() => setPage(Math.max(1, page - 1))} className="w-8 h-8 rounded-lg bg-content/[0.04] hover:bg-content/[0.08] flex items-center justify-center transition-all"><ChevronLeft className="w-4 h-4 text-content/40" /></button>
-              {[1, 2, 3].map((p) => (<button key={p} onClick={() => setPage(p)} className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-medium transition-all ${p === page ? "bg-content/[0.1] text-content border border-content/[0.15]" : "bg-content/[0.04] text-content/40 hover:bg-content/[0.08]"}`}>{p}</button>))}
-              <button onClick={() => setPage(Math.min(3, page + 1))} className="w-8 h-8 rounded-lg bg-content/[0.04] hover:bg-content/[0.08] flex items-center justify-center transition-all"><ChevronRight className="w-4 h-4 text-content/40" /></button>
+              <button onClick={() => setPage(Math.max(1, page - 1))} className="w-10 h-10 md:w-8 md:h-8 rounded-lg bg-content/[0.04] hover:bg-content/[0.08] flex items-center justify-center transition-all"><ChevronLeft className="w-6 h-6 md:w-4 md:h-4 text-content/40" /></button>
+              {[1, 2, 3].map((p) => (<button key={p} onClick={() => setPage(p)} className={`w-10 h-10 md:w-8 md:h-8 rounded-lg flex items-center justify-center text-[13px] md:text-xs font-medium transition-all ${p === page ? "bg-content/[0.1] text-content border border-content/[0.15]" : "bg-content/[0.04] text-content/40 hover:bg-content/[0.08]"}`}>{p}</button>))}
+              <button onClick={() => setPage(Math.min(3, page + 1))} className="w-10 h-10 md:w-8 md:h-8 rounded-lg bg-content/[0.04] hover:bg-content/[0.08] flex items-center justify-center transition-all"><ChevronRight className="w-6 h-6 md:w-4 md:h-4 text-content/40" /></button>
             </div>
           </div>
         </div>

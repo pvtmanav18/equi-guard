@@ -93,7 +93,7 @@ export default function ReportsPage() {
       </div>
       
       <div className="flex items-center gap-1 mb-6 bg-content/[0.03] border border-content/[0.06] rounded-lg p-1 w-fit">
-        {(["audit", "custom"] as const).map((tab) => (<button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 rounded-md text-sm font-medium transition-all  ${activeTab === tab ? "bg-content/[0.1] text-content border border-content/[0.15]" : "text-content/40 hover:text-content/60"}`}>{tab === "audit" ? "Audit Reports" : "Custom Reports"}</button>))}
+        {(["audit", "custom"] as const).map((tab) => (<button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 rounded-md text-md md:text-sm font-medium transition-all  ${activeTab === tab ? "bg-content/[0.1] text-content border border-content/[0.15]" : "text-content/40 hover:text-content/60"}`}>{tab === "audit" ? "Audit Reports" : "Custom Reports"}</button>))}
       </div>
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20">
@@ -109,19 +109,19 @@ export default function ReportsPage() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           <div className="tour-report-list lg:col-span-3 space-y-3">
-            <h3 className="text-xs font-medium text-content/30 uppercase tracking-widest mb-5">Available Reports</h3>
+            <h3 className="text-[13px] md:text-xs font-medium text-content/30 uppercase tracking-widest mb-5">Available Reports</h3>
             {data.auditReports.map((report: any) => (
               <div key={report.id} className="glass-card rounded-xl p-5 flex items-center justify-between group hover:bg-content/[0.05] hover:border-content/[0.1] transition-all cursor-pointer">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-lg bg-content/[0.06] flex items-center justify-center shrink-0">
                     {report.type === "Audit" ? <Shield className="w-5 h-5 text-content/60" /> : report.type === "Evaluation" ? <BarChart3 className="w-5 h-5 text-content/50" /> : <FileText className="w-5 h-5 text-content/50" />}
                   </div>
-                  <div><h4 className="text-md font-medium text-content/80">{report.name}</h4><p className="text-sm text-content/30 mt-0.5">{report.description}</p></div>
+                  <div><h4 className="text-lg md:text-md font-medium text-content/80">{report.name}</h4><p className="text-md md:text-sm text-content/30 mt-0.5">{report.description}</p></div>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="text-right hidden sm:block">
-                    <div className="flex items-center gap-1.5 text-sm text-content/30"><Calendar className="w-3 h-3" />{report.date}</div>
-                    <span className={`text-[11px] font-medium uppercase tracking-wider mt-0.5 inline-block ${report.status === "ready" ? "text-content/70" : "text-content/40"}`}>{report.status === "ready" ? "Ready" : "Generating..."}</span>
+                    <div className="flex items-center gap-1.5 text-md md:text-sm text-content/30"><Calendar className="w-3.5 h-3.5 md:w-3 md:h-3" />{report.date}</div>
+                    <span className={`text-[13px] md:text-[11px] font-medium uppercase tracking-wider mt-0.5 inline-block ${report.status === "ready" ? "text-content/70" : "text-content/40"}`}>{report.status === "ready" ? "Ready" : "Generating..."}</span>
                   </div>
                   <div className="flex gap-1">
                     <button className="w-10 h-10 rounded-lg bg-content/[0.04] hover:bg-primary/[0.2]  flex items-center justify-center transition-all"><Eye className="w-5 h-5 text-content/40 hover:text-primary" /></button>
@@ -132,18 +132,18 @@ export default function ReportsPage() {
             ))}
           </div>
           <div className="tour-export-options lg:col-span-2">
-            <h3 className="text-xs font-medium text-content/30 uppercase tracking-widest mb-3">Report Preview</h3>
+            <h3 className="text-[13px] md:text-xs font-medium text-content/30 uppercase tracking-widest mb-3">Report Preview</h3>
             {data.reportPreview ? (
               <div className="glass-card rounded-xl overflow-hidden">
                 <div className="bg-content/[0.04] border-b border-content/[0.06] p-5">
-                  <div className="flex items-center gap-2 mb-2"><Shield className="w-4 h-4 text-content/60" /><span className="text-[10px] font-medium text-content/50 uppercase tracking-wider">EquiGuard Report</span></div>
-                  <h4 className="text-lg font-bold text-content">{data.reportPreview.title}</h4>
-                  <p className="text-sm text-content/30 mt-1">{data.reportPreview.subtitle}</p>
+                  <div className="flex items-center gap-2 mb-2"><Shield className="w-5 h-5 md:w-4 md:h-4 text-content/60" /><span className="text-[13px] md:text-[10px] font-medium text-content/50 uppercase tracking-wider">EquiGuard Report</span></div>
+                  <h4 className="text-xl md:text-lg font-bold text-content">{data.reportPreview.title}</h4>
+                  <p className="text-md md:text-sm text-content/30 mt-1">{data.reportPreview.subtitle}</p>
                 </div>
-                <div className="p-5 space-y-4">{data.reportPreview.sections.map((section: any) => (<div key={section.label} className="flex items-center justify-between py-2 border-b border-content/[0.04] last:border-0"><span className="text-sm text-content/40">{section.label}</span><span className={`text-sm font-semibold ${section.color}`}>{section.value}</span></div>))}</div>
+                <div className="p-5 space-y-4">{data.reportPreview.sections.map((section: any) => (<div key={section.label} className="flex items-center justify-between py-2 border-b border-content/[0.04] last:border-0"><span className="text-md md:text-sm text-content/40">{section.label}</span><span className={`text-md md:text-sm font-semibold ${section.color}`}>{section.value}</span></div>))}</div>
                 <div className="border-t border-content/[0.06] p-4 flex gap-2">
-                  <button className="flex-1 inline-flex items-center justify-center gap-2 text-sm font-medium text-content/50 bg-content/[0.04] hover:bg-content/[0.06] px-4 py-2.5 rounded-lg transition-all"><Eye className="w-3.5 h-3.5" />View Full Preview</button>
-                  <button className="flex-1 inline-flex items-center justify-center gap-2 text-sm font-medium text-content/70 bg-content/[0.08] hover:bg-content/[0.12] px-4 py-2.5 rounded-lg transition-all border border-content/[0.1]"><Download className="w-3.5 h-3.5" />Download PDF</button>
+                  <button className="flex-1 inline-flex items-center justify-center gap-2 text-md md:text-sm font-medium text-content/50 bg-content/[0.04] hover:bg-content/[0.06] px-4 py-2.5 rounded-lg transition-all"><Eye className="w-5 h-5 md:w-3.5 md:h-3.5" />View Preview</button>
+                  <button className="flex-1 inline-flex items-center justify-center gap-2 text-md md:text-sm font-medium text-content/70 bg-content/[0.08] hover:bg-content/[0.12] px-4 py-2.5 rounded-lg transition-all border border-content/[0.1]"><Download className="w-5 h-5 md:w-3.5 md:h-3.5" />Download</button>
                 </div>
               </div>
             ) : (

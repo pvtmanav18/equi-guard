@@ -27,7 +27,7 @@ function MobileNav() {
           <div className="w-8 h-8 rounded-xl bg-cta flex items-center justify-center shrink-0 shadow-lg shadow-cta/20">
             <Shield className="w-4 h-4 text-cta-foreground" />
           </div>
-          <span className="text-lg font-bold tracking-tight text-content">EquiGuard</span>
+          <span className="text-xl md:text-lg font-bold tracking-tight text-content">EquiGuard</span>
         </Link>
         <button 
           onClick={() => setIsOpen(!isOpen)} 
@@ -56,13 +56,13 @@ function MobileNav() {
         )}>
           <div className="flex flex-col h-full pt-20 pb-6 px-4">
             <nav className="flex-1 space-y-1 overflow-y-auto pr-2 custom-scrollbar">
-              <p className="text-[10px] font-bold text-content/30 uppercase tracking-[0.2em] px-3 mb-4">Main Navigation</p>
+              <p className="text-[13px] md:text-[10px] font-bold text-content/30 uppercase tracking-[0.2em] px-3 mb-4">Main Navigation</p>
               {navItems.map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
                 return (
                   <Link key={item.href} href={item.href} onClick={() => setIsOpen(false)}
                     className={cn(
-                      "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200",
+                      "flex items-center gap-3 px-4 py-3 rounded-xl text-md md:text-sm font-medium transition-all duration-200",
                       isActive 
                         ? "bg-content/[0.1] text-content border border-content/[0.1]" 
                         : "text-content/50 hover:text-content/90 hover:bg-content/[0.04] border border-transparent"
@@ -75,11 +75,11 @@ function MobileNav() {
               })}
 
               <div className="my-6 border-t border-content/[0.06]" />
-              <p className="text-[10px] font-bold text-content/30 uppercase tracking-[0.2em] px-3 mb-4">Support</p>
+              <p className="text-[13px] md:text-[10px] font-bold text-content/30 uppercase tracking-[0.2em] px-3 mb-4">Support</p>
               
               <Link href="/ai-assistant" onClick={() => setIsOpen(false)} 
                 className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all",
+                  "flex items-center gap-3 px-4 py-3 rounded-xl text-md md:text-sm font-medium transition-all",
                   pathname === "/ai-assistant" 
                     ? "bg-content/[0.1] text-content border border-content/[0.1]" 
                     : "text-content/50 hover:text-content/90 hover:bg-content/[0.04] border border-transparent"
@@ -97,8 +97,8 @@ function MobileNav() {
                     {user?.displayName?.[0] || user?.email?.[0] || "U"}
                   </div>
                   <div className="overflow-hidden">
-                    <p className="text-sm font-bold text-content truncate">{user?.displayName || "User"}</p>
-                    <p className="text-[11px] text-content/30 truncate">{user?.email}</p>
+                    <p className="text-md md:text-sm font-bold text-content truncate">{user?.displayName || "User"}</p>
+                    <p className="text-[13px] md:text-[11px] text-content/30 truncate">{user?.email}</p>
                   </div>
                 </div>
                 <button 

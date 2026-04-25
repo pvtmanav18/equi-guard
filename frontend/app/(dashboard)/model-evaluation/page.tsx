@@ -138,11 +138,11 @@ export default function ModelEvaluationPage() {
         />
       </div>
       <div className="tour-performance-metrics glass-card rounded-xl p-6 mb-6">
-        <h3 className="text-lg font-semibold text-content mb-1">Performance Overview</h3>
-        <p className="text-sm text-content/30 mb-10">Model performance metrics across groups</p>
+        <h3 className="text-lg md:text-md font-semibold text-content mb-1">Performance Overview</h3>
+        <p className="text-md md:text-sm text-content/30 mb-10">Model performance metrics across groups</p>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="flex flex-col items-center justify-center">
-            <p className="text-xs font-medium uppercase tracking-widest text-content/40 mb-4">Overall Model Fairness</p>
+            <p className="text-[13px] md:text-xs font-medium uppercase tracking-widest text-content/40 mb-4">Overall Model Fairness</p>
             <div className="relative">
               <svg className="w-36 h-36 -rotate-90" viewBox="0 0 120 120">
                 <circle cx="60" cy="60" r="52" fill="none" stroke={`rgba(${cr},0.04)`} strokeWidth="8" />
@@ -150,10 +150,10 @@ export default function ModelEvaluationPage() {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-3xl font-bold text-content">{data.overallFairness.toFixed(2)}</span>
-                <span className="text-[09px] text-content/40 font-medium">{data.fairnessStatus}</span>
+                <span className="text-[12px] md:text-[09px] text-content/40 font-medium">{data.fairnessStatus}</span>
               </div>
             </div>
-            <p className="text-[12px] text-content/25 mt-3 text-center">Fair model performance metric (target: ≥0.80)</p>
+            <p className="text-[13px] md:text-[12px] text-content/25 mt-3 text-center">Fair model performance metric (target: ≥0.80)</p>
           </div>
           <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
             <StatCard label="Overall Accuracy" value={data.stats.overallAccuracy} icon={Target} subtitle="All groups combined" />
@@ -166,8 +166,8 @@ export default function ModelEvaluationPage() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="tour-confusion-matrix lg:col-span-2 glass-card rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-content mb-3">Accuracy by Group</h3>
-          <p className="text-sm text-content/30 mb-20">Model accuracy broken down by demographic group</p>
+          <h3 className="text-lg md:text-md font-semibold text-content mb-3">Accuracy by Group</h3>
+          <p className="text-md md:text-sm text-content/30 mb-20">Model accuracy broken down by demographic group</p>
           <ResponsiveContainer width="100%" height={300}>
             < BarChart data={data.accuracyByGroup} barSize={32}>
               <CartesianGrid strokeDasharray="3 3" stroke={`rgba(${cr},0.04)`} />
@@ -180,18 +180,18 @@ export default function ModelEvaluationPage() {
         </div>
         <div className="space-y-6">
           <div className="glass-card rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-content mb-6">Performance Gap</h3>
-            <div className="text-center mb-4"><span className="text-5xl font-bold text-content">{data.performanceGap}</span><p className="text-sm text-content/40 mt-2">Gap between best and worst performing groups</p></div>
+            <h3 className="text-lg md:text-md font-semibold text-content mb-6">Performance Gap</h3>
+            <div className="text-center mb-4"><span className="text-5xl font-bold text-content">{data.performanceGap}</span><p className="text-md md:text-sm text-content/40 mt-2">Gap between best and worst performing groups</p></div>
             <div className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2"><span className="text-xs text-content/40">Best Performing Group</span><span className="text-xs font-medium text-content/80">{data.bestGroup}</span></div>
-              <div className="flex items-center justify-between"><span className="text-xs text-content/40">Worst Performing Group</span><span className="text-xs font-medium text-content/50">{data.worstGroup}</span></div>
+              <div className="flex items-center justify-between mb-2"><span className="text-[13px] md:text-xs text-content/40">Best Performing Group</span><span className="text-[13px] md:text-xs font-medium text-content/80">{data.bestGroup}</span></div>
+              <div className="flex items-center justify-between"><span className="text-[13px] md:text-xs text-content/40">Worst Performing Group</span><span className="text-[13px] md:text-xs font-medium text-content/50">{data.worstGroup}</span></div>
             </div>
           </div>
           <div className="glass-card rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-content mb-3">Recommendations</h3>
-            <div className="space-y-3">{data.recommendations.map((rec: string, i: number) => (<div key={i} className="flex items-start gap-2.5"><div className="w-1.5 h-1.5 rounded-full bg-content/50 mt-1.5 shrink-0" /><p className="text-sm text-content/40">{rec}</p></div>))}</div>
+            <h3 className="text-lg md:text-md font-semibold text-content mb-3">Recommendations</h3>
+            <div className="space-y-3">{data.recommendations.map((rec: string, i: number) => (<div key={i} className="flex items-start gap-2.5"><div className="w-1.5 h-1.5 rounded-full bg-content/50 mt-1.5 shrink-0" /><p className="text-md md:text-sm text-content/40">{rec}</p></div>))}</div>
           </div>
-          <button className="w-full glass-card rounded-xl p-4 flex items-center justify-between group hover:bg-content/[0.05] transition-all"><span className="text-sm font-medium text-content/60">View Full Report</span><ArrowRight className="w-4 h-4 text-content/40 group-hover:translate-x-1 transition-transform" /></button>
+          <button className="w-full glass-card rounded-xl p-4 flex items-center justify-between group hover:bg-content/[0.05] transition-all"><span className="text-md font-medium text-content/60">View Full Report</span><ArrowRight className="w-5 h-5 md:w-4 md:h-4 text-content/40 group-hover:translate-x-1 transition-transform" /></button>
         </div>
       </div>
     </div>

@@ -160,7 +160,7 @@ export default function LandingPage() {
         </nav>
 
         {/* Hero */}
-        <section className="relative z-10 px-6 lg:px-12 pt-20 pb-24 lg:pt-32 lg:pb-40 overflow-hidden">
+        <section className="relative z-10 px-6 lg:px-12 pt-10 pb-24 lg:pt-32 lg:pb-40 overflow-hidden">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-8 relative">
 
@@ -185,7 +185,7 @@ export default function LandingPage() {
                       ))}
                     </div>
                     <div className="flex gap-2">{[...Array(7)].map((_, i) => (<div key={i} className="flex-1 flex flex-col justify-end h-16 gap-1"><div className="w-full rounded-sm bg-content/[0.08]" style={{ height: `${30 + Math.sin(i) * 20 + 20}%` }} /><div className="w-full rounded-sm bg-primary/60" style={{ height: `${50 + Math.cos(i) * 15 + 15}%` }} /></div>))}</div>
-                  </div>
+                  </div>x``
                 </div>
               </div>
 
@@ -232,14 +232,14 @@ export default function LandingPage() {
                     <feature.icon className="w-7 h-7 text-primary" />
                   </div>
                   <h3 className="text-xl font-bold text-content mb-4">{feature.title}</h3>
-                  <p className="text-lg text-content/40 leading-relaxed font-medium">{feature.description}</p>
+                  <p className="text-md text-content/40 leading-relaxed font-medium">{feature.description}</p>
                 </div>
               ))}
             </div>
 
             {/* Feature Highlight Illustration */}
             <div className="mt-30 lg:mt-40 flex flex-col lg:flex-row items-center gap-20 animate-fade-in-up">
-              <div className="relative z-10 w-full flex-1 mb-5 flex items-center justify-center group cursor-pointer">
+              <div className="relative z-10 w-full flex-1 mb-2 flex items-center justify-center group cursor-pointer">
                 <img
                   src="/illustrations/synthesis.png"
                   alt="Synthesis Illustration"
@@ -273,12 +273,12 @@ export default function LandingPage() {
               <div className="inline-flex items-center gap-2 text-xs font-bold text-primary bg-primary/10 border border-primary/20 px-4 py-2 rounded-full mb-6 uppercase tracking-widest"><Zap className="w-3.5 h-3.5" />Simple Workflow</div>
               <h2 className="text-4xl sm:text-6xl font-black text-content tracking-tight mb-4">Three Steps to<br /><span className="text-primary">Unbiased Systems</span></h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-32">
+            <div className="grid grid-cols-1  md:grid-cols-3 gap-10 mb-32">
               {steps.map((step, i) => (
                 <div key={step.number} className="relative bg-background border border-content/[0.05] rounded-[2rem] p-12 text-center animate-fade-in-up group hover:border-primary/50 transition-all duration-800" style={{ animationDelay: `${i * 150}ms` }}>
                   <div className="text-7xl font-black text-content/[0.08] mb-6 group-hover:text-primary/30 transition-colors">{step.number}</div>
                   <h3 className="text-2xl font-bold text-content mb-4">{step.title}</h3>
-                  <p className="text-lg text-content/40 leading-relaxed font-medium">{step.description}</p>
+                  <p className="text-md text-content/40 leading-relaxed font-medium">{step.description}</p>
                   {i < steps.length - 1 && (
                     <div className="hidden md:block absolute top-1/2 -right-5 -translate-y-1/2 z-10">
                       <ChevronRight className="w-10 h-10 text-content/10" />
@@ -291,7 +291,7 @@ export default function LandingPage() {
             {/* Synthesis Illustration */}
             <div className="flex flex-col  md:mt-48 lg:flex-row-reverse items-center gap-20 animate-fade-in-up">
 
-              <div className="relative z-10 w-full flex-1 mb-5 flex items-center justify-center group cursor-pointer">
+              <div className="relative z-10 w-full flex-1 mb-2 flex items-center justify-center group cursor-pointer">
                 <img
                   src="/illustrations/synthesis.png"
                   alt="Synthesis Illustration"
@@ -319,8 +319,8 @@ export default function LandingPage() {
               <div className="relative z-10">
                 <div className="w-20 h-20 rounded-[3rem] bg-primary/10 flex items-center justify-center mx-auto mb-10"><ShieldCheck className="w-10 h-10 text-primary" /></div>
                 <h2 className="text-[25px] sm:text-4xl font-black tracking-tight md:mb-2 text-content">Ready to Build?</h2>
-                <h2 className="text-[25px] sm:text-5xl font-black tracking-tight mb-8 text-primary">Fair & Bias-Free Systems</h2>
-                <p className="text-lg md:text-xl text-content/40 max-w-xl mx-auto mb-6 md:mb-12 font-medium leading-relaxed ">Join organizations using EquiGuard to audit, detect, and mitigate bias before their systems impact real people.</p>
+                <h2 className="text-[23px] sm:text-5xl font-black tracking-tight mb-8 text-primary">Fair & Bias-Free Systems</h2>
+                <p className="text-md md:text-xl text-content/40 max-w-xl mx-auto mb-6 md:mb-12 font-medium leading-relaxed ">Join organizations using EquiGuard to audit, detect, and mitigate bias before their systems impact real people.</p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                   <Link href="/login?mode=signup" className="group inline-flex items-center gap-3 bg-white/80 text-primary font-black text-md md:text-xl px-5 py-3 md:px-10 md:py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-2xl shadow-primary/20">Create Free Account<ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" /></Link>
                   <Link href="/login" className="text-sm md:text-lg font-bold text-content/60 hover:text-content transition-colors">Already have an account? Sign in →</Link>
@@ -385,7 +385,7 @@ export default function LandingPage() {
                         <p className="text-content/50 text-[10px] uppercase tracking-wider font-medium">{member.role}</p>
                       </div>
                     ))}
-                  </div>  
+                  </div>
                 </div>
 
                 {/* Social Links */}
@@ -415,7 +415,7 @@ export default function LandingPage() {
           <div className=" mx-auto">
 
             <div className="pt-5 border-t border-content/[0.05] text-center">
-              <p className="text-[10px] md:text-sm font-bold text-content/20 uppercase tracking-[0.2em]">© {new Date().getFullYear()} EquiGuard — Building a Fairer Future</p>
+              <p className="text-[9px] md:text-sm font-bold text-content/20 uppercase tracking-[0.2em]">© {new Date().getFullYear()} EquiGuard — Building a Fairer Future</p>
             </div>
           </div>
         </footer>
