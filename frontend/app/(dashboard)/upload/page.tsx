@@ -175,7 +175,7 @@ export default function UploadPage() {
                 className="w-full border rounded-xl px-4 py-3"
               >
                 <option value="">Select Target</option>
-                <option value="hired">hired</option>
+                <option value="mark">mark</option>
                 <option value="mark">mark</option>
                 <option value="approved">approved</option>
                 <option value="selected">selected</option>
