@@ -176,6 +176,7 @@ export default function UploadPage() {
               >
                 <option value="">Select Target</option>
                 <option value="hired">hired</option>
+                <option value="mark">mark</option>
                 <option value="approved">approved</option>
                 <option value="selected">selected</option>
               </select>
