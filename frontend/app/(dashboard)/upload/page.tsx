@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  Upload,
   CloudUpload,
   Check,
   ArrowRight,
@@ -12,7 +11,6 @@ import {
   Columns,
   HardDrive,
   Lightbulb,
-  ChevronDown,
 } from "lucide-react";
 
 export default function UploadPage() {
@@ -23,13 +21,14 @@ export default function UploadPage() {
   const [uploaded, setUploaded] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
 
+  // TEXT INPUTS
   const [targetVar, setTargetVar] = useState("");
   const [protectedAttr, setProtectedAttr] = useState("");
   const [prediction, setPrediction] = useState("");
 
   const handleAnalyze = async () => {
     if (!file || !targetVar || !protectedAttr) {
-      alert("Please upload file and select required fields.");
+      alert("Please upload file and fill required fields.");
       return;
     }
 
@@ -41,6 +40,7 @@ export default function UploadPage() {
       formData.append("file", file);
       formData.append("target", targetVar);
       formData.append("protected", protectedAttr);
+      formData.append("prediction", prediction);
 
       const response = await fetch("http://127.0.0.1:8000/analyze", {
         method: "POST",
@@ -48,7 +48,7 @@ export default function UploadPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Backend failed");
+        throw new Error("Backend Error");
       }
 
       const data = await response.json();
@@ -58,7 +58,7 @@ export default function UploadPage() {
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
-      alert("Analysis failed");
+      alert("Analysis Failed");
     } finally {
       setAnalyzing(false);
     }
@@ -66,33 +66,16 @@ export default function UploadPage() {
 
   return (
     <div className="max-w-6xl mx-auto p-8">
-      {/* Header */}
+      {/* HEADER */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2">Upload & Analyze</h1>
         <p className="text-gray-500">
-          Upload your dataset and detect bias automatically.
+          Upload dataset and detect fairness / bias automatically.
         </p>
       </div>
 
-      {/* Upload Box */}
+      {/* FILE UPLOAD */}
       <div className="bg-white rounded-2xl shadow p-6 mb-8">
-        <div className="flex gap-2 mb-5">
-          {["Upload Data", "Settings", "Analyze", "Complete"].map(
-            (step, i) => (
-              <span
-                key={step}
-                className={`px-3 py-1 rounded-full text-sm ${
-                  i === 0
-                    ? "bg-black text-white"
-                    : "bg-gray-100 text-gray-500"
-                }`}
-              >
-                {step}
-              </span>
-            )
-          )}
-        </div>
-
         <div
           onDragOver={(e) => {
             e.preventDefault();
@@ -103,17 +86,15 @@ export default function UploadPage() {
             e.preventDefault();
             setDragOver(false);
 
-            const droppedFile = e.dataTransfer.files[0];
+            const dropped = e.dataTransfer.files[0];
 
-            if (droppedFile) {
-              setFile(droppedFile);
+            if (dropped) {
+              setFile(dropped);
               setUploaded(true);
             }
           }}
           className={`border-2 border-dashed rounded-2xl p-16 text-center transition ${
-            dragOver
-              ? "border-blue-500 bg-blue-50"
-              : "border-gray-300"
+            dragOver ? "border-blue-500 bg-blue-50" : "border-gray-300"
           }`}
         >
           <input
@@ -136,88 +117,71 @@ export default function UploadPage() {
               <>
                 <Check className="mx-auto text-green-500 w-12 h-12 mb-4" />
                 <p className="font-semibold">{file?.name}</p>
-                <p className="text-sm text-gray-500">Uploaded Successfully</p>
+                <p className="text-sm text-gray-500">Uploaded</p>
               </>
             ) : (
               <>
                 <CloudUpload className="mx-auto w-12 h-12 mb-4 text-gray-500" />
-                <p className="font-semibold">
-                  Drag & Drop CSV file here
-                </p>
-                <p className="text-sm text-gray-500">
-                  or click to browse
-                </p>
+                <p className="font-semibold">Drag & Drop CSV Here</p>
+                <p className="text-sm text-gray-500">or click to browse</p>
               </>
             )}
           </label>
         </div>
       </div>
 
-      {/* Main Grid */}
+      {/* GRID */}
       <div className="grid md:grid-cols-2 gap-8">
-        {/* Left Side */}
+        {/* LEFT */}
         <div className="space-y-6">
-          {/* Configure */}
           <div className="bg-white rounded-2xl shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">
+            <h2 className="text-xl font-semibold mb-6">
               Configure Analysis
             </h2>
 
-            {/* Target */}
+            {/* TARGET INPUT */}
             <div className="mb-4">
-              <label className="block mb-2 text-sm font-medium">
-                Target Variable
+              <label className="block mb-2 font-medium">
+                Target Column
               </label>
-
-              <select
+              <input
+                type="text"
+                placeholder="Example: hired"
                 value={targetVar}
                 onChange={(e) => setTargetVar(e.target.value)}
                 className="w-full border rounded-xl px-4 py-3"
-              >
-                <option value="">Select Target</option>
-                <option value="mark">mark</option>
-                <option value="mark">mark</option>
-                <option value="approved">approved</option>
-                <option value="selected">selected</option>
-              </select>
+              />
             </div>
 
-            {/* Protected */}
+            {/* PROTECTED INPUT */}
             <div className="mb-4">
-              <label className="block mb-2 text-sm font-medium">
-                Protected Attribute
+              <label className="block mb-2 font-medium">
+                Protected Column
               </label>
-
-              <select
+              <input
+                type="text"
+                placeholder="Example: gender"
                 value={protectedAttr}
                 onChange={(e) => setProtectedAttr(e.target.value)}
                 className="w-full border rounded-xl px-4 py-3"
-              >
-                <option value="">Select Attribute</option>
-                <option value="gender">gender</option>
-                <option value="race">race</option>
-                <option value="age">age</option>
-              </select>
+              />
             </div>
 
-            {/* Prediction */}
+            {/* OPTIONAL INPUT */}
             <div className="mb-6">
-              <label className="block mb-2 text-sm font-medium">
+              <label className="block mb-2 font-medium">
                 Prediction Column (Optional)
               </label>
-
-              <select
+              <input
+                type="text"
+                placeholder="Example: prediction"
                 value={prediction}
                 onChange={(e) => setPrediction(e.target.value)}
                 className="w-full border rounded-xl px-4 py-3"
-              >
-                <option value="">Select Prediction</option>
-                <option value="prediction">prediction</option>
-                <option value="score">score</option>
-              </select>
+              />
             </div>
 
-            {/* Button */}
+            {/* BUTTON */}
             <button
               onClick={handleAnalyze}
               disabled={
@@ -241,21 +205,10 @@ export default function UploadPage() {
               )}
             </button>
           </div>
-
-          {/* Model */}
-          <div className="bg-white rounded-2xl shadow p-6">
-            <h2 className="text-xl font-semibold mb-2">
-              Configure Model
-            </h2>
-            <p className="text-gray-500 text-sm">
-              Fairness metrics and future ML settings.
-            </p>
-          </div>
         </div>
 
-        {/* Right Side */}
+        {/* RIGHT */}
         <div className="space-y-6">
-          {/* Data Info */}
           <div className="bg-white rounded-2xl shadow p-6">
             <h2 className="text-xl font-semibold mb-4">
               About Your Data
@@ -284,23 +237,22 @@ export default function UploadPage() {
                 <Lightbulb className="mb-2 w-5 h-5" />
                 <p className="text-sm text-gray-500">Tip</p>
                 <p className="font-semibold text-xs">
-                  Include target & protected columns
+                  Enter exact column names from CSV
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Guide */}
           <div className="bg-white rounded-2xl shadow p-6">
             <h2 className="text-xl font-semibold mb-4">
               Quick Guide
             </h2>
 
-            <div className="space-y-3 text-sm text-gray-600">
-              <p>1. Upload CSV file</p>
-              <p>2. Select target column</p>
-              <p>3. Select protected column</p>
-              <p>4. Run analysis</p>
+            <div className="space-y-2 text-sm text-gray-600">
+              <p>1. Upload CSV</p>
+              <p>2. Type target column</p>
+              <p>3. Type protected column</p>
+              <p>4. Click Analyze</p>
             </div>
           </div>
         </div>
